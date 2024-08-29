@@ -23,6 +23,7 @@ train:
     
     # Optimizer initial learning rate
     lr: 0.001
+    check_val_every_n_epoch: 5
     scheduler:
         type: 
         params:
@@ -57,4 +58,5 @@ validation:
     root_dir:
     # Intersection over union evaluation
     iou_threshold: 0.4
-    val_accuracy_interval: 20
+    val_accuracy_interval: 1
+

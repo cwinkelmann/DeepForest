@@ -105,6 +105,7 @@ def __evaluate_wrapper__(predictions,
             results: a dictionary of results with keys, results, box_recall, box_precision, class_recall
         """
     # remove empty samples from ground truth
+    # TODO: Why is this needed?
     ground_df = ground_df[~((ground_df.xmin == 0) & (ground_df.xmax == 0))]
 
     # Default results for blank predictions

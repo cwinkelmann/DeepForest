@@ -163,7 +163,7 @@ class deepforest(pl.LightningModule):
         self.config["score_thresh"] = 0.3
 
         # Set label dictionary to Bird
-        self.label_dict = {"Bird": 0}
+        # self.label_dict = {"Nest": 0}
         self.numeric_to_label_dict = {v: k for k, v in self.label_dict.items()}
 
     def create_model(self):
@@ -218,7 +218,8 @@ class deepforest(pl.LightningModule):
             "fast_dev_run": self.config["train"]["fast_dev_run"],
             "callbacks": callbacks,
             "limit_val_batches": limit_val_batches,
-            "num_sanity_val_steps": num_sanity_val_steps
+            "num_sanity_val_steps": num_sanity_val_steps,
+            "check_val_every_n_epoch": self.config["train"]["check_val_every_n_epoch"]
         }
         # Update with kwargs to allow them to override config
         trainer_args.update(kwargs)
@@ -633,6 +634,8 @@ class deepforest(pl.LightningModule):
             if self.predictions_df.empty:
                 warnings.warn("No predictions made, skipping evaluation")
                 geom_type = utilities.determine_geometry_type(ground_df)
+
+                # TODO check this code, why is this not used??
                 if geom_type == "box":
                     result = {
                         "box_recall": 0,
@@ -727,7 +730,8 @@ class deepforest(pl.LightningModule):
             return {
                 'optimizer': optimizer,
                 'lr_scheduler': scheduler,
-                "monitor": 'val_classification'
+                "monitor": 'val_classification' # FIXME: why am I getting an exception from PyTorch here?
+                # "monitor": 'train_classification'
             }
         else:
             return optimizer
