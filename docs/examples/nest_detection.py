@@ -77,8 +77,8 @@ for image_name in ["JetPortNew_03_029_2022_DJI_0437.JPG", "Horus_04_27_2022_DJI_
         raster_path / image_name, return_plot=True, patch_size=400, patch_overlap=0.25
     )
 
-im = Image.fromarray(predicted_raster)
-im.save(f"predicted_raster_{image_name}")
+    im = Image.fromarray(predicted_raster)
+    im.save(f"predicted_raster_{image_name}")
 
 m.trainer.save_checkpoint(
     os.path.join("models", f"checkpoint_epochs_{epochs}_cosine_lr_retinanet.pl")

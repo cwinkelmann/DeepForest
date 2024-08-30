@@ -63,6 +63,10 @@ def _predict_image_(model,
 
 
 def mosiac(boxes, windows, sigma=0.5, thresh=0.001, iou_threshold=0.1):
+    """
+    FIXME: sigma and thresh and not used, therefore it is impossible to filter predictions with very confidence scores
+    """
+
     # transform the coordinates to original system
     for index, _ in enumerate(boxes):
         xmin, ymin, xmax, ymax = windows[index].getRect()
@@ -98,6 +102,9 @@ def mosiac(boxes, windows, sigma=0.5, thresh=0.001, iou_threshold=0.1):
 
     mosaic_df = pd.DataFrame(image_detections,
                              columns=["xmin", "ymin", "xmax", "ymax", "label", "score"])
+
+    # TODO isn't this missing???
+    mosaic_df = mosaic_df[mosaic_df.score > thresh]
 
     print(f"{mosaic_df.shape[0]} predictions kept after non-max suppression")
 

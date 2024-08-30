@@ -457,7 +457,7 @@ class deepforest(pl.LightningModule):
             return_plot: Should the image be returned with the predictions drawn?
             mosaic: Return a single prediction dataframe (True) or a tuple of image crops and predictions (False)
             sigma: variance of Gaussian function used in Gaussian Soft NMS
-            thresh: the score thresh used to filter bboxes after soft-nms performed
+            thresh: the score threshold used to filter bboxes after soft-nms performed
             color: color of the bounding box as a tuple of BGR color, e.g. orange annotations is (0, 165, 255)
             thickness: thickness of the rectangle border line in px
             cropModel: a deepforest.model.CropModel object to predict on crops
@@ -502,11 +502,13 @@ class deepforest(pl.LightningModule):
                 results.append(boxes)
 
         if mosaic:
+            # TODO typo!
             results = predict.mosiac(results,
                                      ds.windows,
                                      sigma=sigma,
                                      thresh=thresh,
                                      iou_threshold=iou_threshold)
+
             results["label"] = results.label.apply(
                 lambda x: self.numeric_to_label_dict[x])
             if raster_path:
