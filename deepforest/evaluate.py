@@ -30,7 +30,7 @@ def evaluate_image_boxes(predictions, ground_df, root_dir, savedir=None):
     """
     plot_names = predictions["image_path"].unique()
     if len(plot_names) > 1:
-        raise ValueError("More than one plot passed to image crown: {}".format(plot_name))
+        raise ValueError("More than one plot passed to image crown: {}".format(plot_names))
     else:
         plot_name = plot_names[0]
 
