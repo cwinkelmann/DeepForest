@@ -5,6 +5,8 @@ import os
 from omegaconf import OmegaConf
 from deepforest import get_data
 
+import pytest
+
 SCRIPT = files("deepforest.scripts").joinpath("cli.py")
 
 def test_train_cli(tmpdir):
@@ -50,12 +52,15 @@ def test_train_cli_fail(tmpdir):
 
     assert result.returncode != 0
 
-def test_train_cli_user_config(tmpdir):
+@pytest.mark.parametrize("architecture", ["retinanet", "FasterRCNN", "DeformableDetr"])
+def test_train_cli_user_config(tmpdir, architecture):
     """Check whether we can provide a custom YAML file for configuration"""
 
     # Create a modified config
     test_labels = get_data("OSBS_029.csv")
     config = OmegaConf.load(get_data("config.yaml"))
+
+    config.architecture = architecture
     config.train.csv_file = test_labels
     config.train.root_dir = os.path.dirname(test_labels)
     OmegaConf.save(config, tmpdir.join("user_config.yaml").open('w'))
