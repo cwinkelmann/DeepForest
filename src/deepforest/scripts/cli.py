@@ -10,7 +10,9 @@ from deepforest.visualize import plot_results
 
 
 def train(config: DictConfig) -> None:
-    m = deepforest(config=config)
+    label_dict = {"Bird": 0}
+
+    m = deepforest(config=config, label_dict=label_dict, num_classes=len(label_dict))
     m.trainer.fit(m)
 
 

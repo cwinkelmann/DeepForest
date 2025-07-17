@@ -469,9 +469,9 @@ def plot_annotations(
         plt.axis('off')  # Hide axes for a cleaner look
         plt.show()
 
-
+import geopandas as gpd
 def plot_results(results: pd.DataFrame,
-                 ground_truth: Optional[pd.DataFrame] = None,
+                 ground_truth: Optional[gpd.GeoDataFrame] = None,
                  savedir: Optional[str] = None,
                  height: Optional[int] = None,
                  width: Optional[int] = None,
@@ -544,6 +544,7 @@ def plot_results(results: pd.DataFrame,
             return ax
         plt.axis('off')  # Hide axes for a cleaner look
         plt.show()
+    plt.close()
 
 
 def _plot_image_with_geometry(df,

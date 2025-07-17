@@ -14,7 +14,7 @@ import warnings
 import geopandas as gpd
 from deepforest.utilities import read_file, determine_geometry_type
 from shapely import geometry
-
+from loguru import logger
 
 def preprocess_image(image):
     """Preprocess a single RGB numpy array as a prediction from channels last,
@@ -142,7 +142,6 @@ def split_raster(annotations_file=None,
                  path_to_raster=None,
                  numpy_image=None,
                  root_dir=None,
-                 base_dir=None,
                  patch_size=400,
                  patch_overlap=0.05,
                  allow_empty=False,
@@ -235,7 +234,9 @@ def split_raster(annotations_file=None,
             "Reminder that image paths should be the relative "
             "path (e.g. 'image_name.tif'), not the full path "
             "(e.g. path/to/dir/image_name.tif)".format(annotations_file, image_name))
-
+    
+    logger.info(f"writeing {len(image_annotations)} annotations for {image_name} to {save_dir}")
+    
     return process_with_annotations(numpy_image=numpy_image,
                                     windows=windows,
                                     image_annotations=image_annotations,

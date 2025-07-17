@@ -119,7 +119,7 @@ class deepforest(pl.LightningModule, PyTorchModelHubMixin):
 
         self.save_hyperparameters()
 
-    def load_model(self, model_name=None, revision=None):
+    def load_model(self, label_dict, model_name=None, revision=None, ):
         """Loads a model that has already been pretrained for a specific task,
         like tree crown detection.
 
@@ -153,8 +153,17 @@ class deepforest(pl.LightningModule, PyTorchModelHubMixin):
         # Set bird-specific settings if loading the bird model
         if model_name == "weecology/deepforest-bird":
             self.config.score_thresh = 0.3
-            self.label_dict = {"Bird": 0}
+
+            self.label_dict = label_dict
+
             self.numeric_to_label_dict = {v: k for k, v in self.label_dict.items()}
+        else:
+            # If a label_dict is provided, set it
+            if label_dict is not None:
+                self.label_dict = label_dict
+                self.numeric_to_label_dict = {v: k for k, v in self.label_dict.items()}
+
+
 
     def set_labels(self, label_dict):
         """Set new label mapping, updating both the label dictionary (str ->
@@ -927,7 +936,7 @@ class deepforest(pl.LightningModule, PyTorchModelHubMixin):
             return {
                 'optimizer': optimizer,
                 'lr_scheduler': scheduler,
-                "monitor": 'val_classification'
+                "monitor": 'train_loss' # FIXME: what is that?
             }
         else:
             return optimizer
